@@ -1,22 +1,23 @@
 #include "shell.h"
 #include <stdio.h>
 #include <string.h>
+#include <stdlib.h>
 
 /**
- *main - main code entry
- *@argc: argument count
- *@argv: argument variable
- *Return: 0 (always)
+ * main - Main code entry
+ * @argc: Argument count
+ * @argv: Argument variables
+ * Return: 0 (always)
  */
 
-int main(int argc, char *argv)
+int main(int argc, char *argv[])
 {
     char *prompt = "(Shell) $";
-    char *lineptr = NULL, *lineptr_copy = NULL;
+    char *lineptr = NULL;
     size_t n = 0;
     ssize_t n_read;
 
-    (void)ac; (void)argv;
+    (void)argc; (void)argv;
 
     while (1)
     {
@@ -25,13 +26,14 @@ int main(int argc, char *argv)
 
         if (n_read == -1)
         {
-            printf("exiting shell\n");
+            printf("Exiting shell\n");
+            free(lineptr);
             exit(0);
         }
-    
-        printf("%s\n", lineptr);
 
-        free(lineptr);
+        printf("%s\n", lineptr);
     }
-return (0);
+
+    return (0);
 }
+
