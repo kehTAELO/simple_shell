@@ -3,7 +3,7 @@
 #include <stdlib.h>
 #include <string.h>
 
-int main(void)
+int run_program(void)
 {
     char *prompt = "(Shell) $";
     char *lineptr = NULL;
@@ -14,12 +14,14 @@ int main(void)
     int num_token = 0;
     char *token;
     int i = 0;
-    
+    int counter; /* Declare 'counter' here */
+    char **argv; /* Declare 'argv' here */
+
     while (1)
     {
         printf("%s", prompt);
         n_read = getline(&lineptr, &n, stdin);
-        
+
         if (n_read == -1)
         {
             printf("exiting shell\n");
@@ -27,31 +29,31 @@ int main(void)
             free(lineptr_copy);
             return -1;
         }
-        
+
         lineptr_copy = malloc(sizeof(char) * n_read);
-        
+
         if (lineptr_copy == NULL)
         {
             perror("memory allocation error");
             free(lineptr);
             return -1;
         }
-        
+
         strcpy(lineptr_copy, lineptr);
         token = strtok(lineptr, delim);
-        
+
         while (token != NULL)
         {
             num_token++;
             token = strtok(NULL, delim);
         }
-        
+
         num_token++;
-        
-        char **argv = malloc(sizeof(char *) * num_token);
-        
+
+        argv = malloc(sizeof(char *) * num_token); /* Move 'argv' declaration here */
+
         token = strtok(lineptr_copy, delim);
-        
+
         for (i = 0; token != NULL; i++)
         {
             argv[i] = malloc(sizeof(char) * (strlen(token) + 1));
@@ -61,15 +63,15 @@ int main(void)
         argv[i] = NULL;
         printf("%s\n", lineptr);
         free(lineptr);
-        
-        for (int counter = 0; counter < num_token - 1; counter++)
-        {   
+
+        for (counter = 0; counter < num_token - 1; counter++) /* Move 'counter' declaration here */
+        {
             printf("%s\n", argv[counter]);
             free(argv[counter]);
         }
         free(argv);
     }
-    
+
     return 0;
 }
 

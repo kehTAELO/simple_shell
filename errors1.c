@@ -29,59 +29,27 @@ char *read_command(void) {
 }
 
 void execute_command(char *command) {
-    pid_t pid, wpid;
+	pid_t pid;
     int status;
 
     pid = fork();
     if (pid == 0) {
-        // Child process
         char *args[2];
         args[0] = command;
         args[1] = NULL;
 
         execvp(command, args);
-        perror("execvp"); // Executing command failed
+        perror("execvp");
         exit(EXIT_FAILURE);
     } else if (pid < 0) {
-        perror("fork"); // Forking failed
+        perror("fork");
     } else {
-        // Parent process
         do {
-            wpid = waitpid(pid, &status, WUNTRACED);
+            pid = waitpid(pid, &status, WUNTRACED);
         } while (!WIFEXITED(status) && !WIFSIGNALED(status));
     }
 }
 
-
-int main(void) {
-    char *command;
-
-    while (1) {
-        // Display a prompt and read a command
-        display_prompt();
-        command = read_command();
-
-        if (command == NULL) {
-            // Handle error or exit
-            fprintf(stderr, "Error reading command.\n");
-            break;
-        }
-
-        if (strcmp(command, "exit") == 0) {
-            // Exit the shell
-            free(command);
-            break;
-        }
-
-        // Execute the command
-        execute_command(command);
-
-        // Free the allocated memory
-        free(command);
-    }
-
-    return 0;
-}
 
 typedef struct {
     char *fname;
@@ -217,7 +185,6 @@ char *convert_number(long int num, int base, int flags)
     return (ptr);
 }
 
-// Remove the duplicate declaration of remove_comments here
 
 /**
  * remove_comments - function replaces the first instance of '#' with '\0'
