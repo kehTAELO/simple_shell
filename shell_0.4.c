@@ -10,7 +10,7 @@
  * Return: 0 (always)
  */
 
-int main(int argc, char *argv[])
+int execute_program(int argc, char *argv[])
 {
     char *prompt = "(Shell) $";
     char *lineptr = NULL;
