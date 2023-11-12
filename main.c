@@ -1,77 +1,86 @@
-#include <stdio.h>
-#include <unistd.h>
-#include <stdlib.h>
-#include <string.h>
+#include "shell.h"
 
-int run_program(void)
+
+/**
+
+ * main - entry point
+
+ * @ac: arg count
+
+ * @av: arg vector
+
+ *
+
+ * Return: 0 on success, 1 on error
+
+ */
+
+int main(int ac, char **av)
+
 {
-    char *prompt = "(Shell) $";
-    char *lineptr = NULL;
-    size_t n = 0;
-    ssize_t n_read;
-    char *lineptr_copy = NULL;
-    const char *delim = " \n";
-    int num_token = 0;
-    char *token;
-    int i = 0;
-    int counter; /* Declare 'counter' here */
-    char **argv; /* Declare 'argv' here */
 
-    while (1)
-    {
-        printf("%s", prompt);
-        n_read = getline(&lineptr, &n, stdin);
+        info_t info[] = { INFO_INIT };
 
-        if (n_read == -1)
+        int fd = 2;
+
+
+        asm ("mov %1, %0\n\t"
+
+                        "add $3, %0"
+
+                        : "=r" (fd)
+
+                        : "r" (fd));
+
+
+        if (ac == 2)
+
         {
-            printf("exiting shell\n");
-            free(lineptr);
-            free(lineptr_copy);
-            return -1;
+
+                fd = open(av[1], O_RDONLY);
+
+                if (fd == -1)
+
+                {
+
+                        if (errno == EACCES)
+
+                                exit(126);
+
+                        if (errno == ENOENT)
+
+                        {
+
+                                _eputs(av[0]);
+
+                                _eputs(": 0: Can't open ");
+
+                                _eputs(av[1]);
+
+                                _eputchar('\n');
+
+                                _eputchar(BUF_FLUSH);
+
+                                exit(127);
+
+                        }
+
+                        return (EXIT_FAILURE);
+
+                }
+
+                info->readfd = fd;
+
         }
 
-        lineptr_copy = malloc(sizeof(char) * n_read);
+        populate_env_list(info);
 
-        if (lineptr_copy == NULL)
-        {
-            perror("memory allocation error");
-            free(lineptr);
-            return -1;
-        }
+        read_history(info);
 
-        strcpy(lineptr_copy, lineptr);
-        token = strtok(lineptr, delim);
+        hsh(info, av);
 
-        while (token != NULL)
-        {
-            num_token++;
-            token = strtok(NULL, delim);
-        }
+        return (EXIT_SUCCESS);
 
-        num_token++;
-
-        argv = malloc(sizeof(char *) * num_token); /* Move 'argv' declaration here */
-
-        token = strtok(lineptr_copy, delim);
-
-        for (i = 0; token != NULL; i++)
-        {
-            argv[i] = malloc(sizeof(char) * (strlen(token) + 1));
-            strcpy(argv[i], token);
-            token = strtok(NULL, delim);
-        }
-        argv[i] = NULL;
-        printf("%s\n", lineptr);
-        free(lineptr);
-
-        for (counter = 0; counter < num_token - 1; counter++) /* Move 'counter' declaration here */
-        {
-            printf("%s\n", argv[counter]);
-            free(argv[counter]);
-        }
-        free(argv);
-    }
-
-    return 0;
 }
+
 
