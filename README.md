@@ -2,6 +2,9 @@
 
 this is a readme file the above mentioned team project in which i will be doing SOLO created by taELo lebELo.
 
+Description: 
+Topics: (none)
+
 0. Betty would be proud
 
 1. Simple shell 0.1
