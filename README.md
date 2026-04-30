@@ -8,7 +8,8 @@ handling, environment variable management, and system interaction. Essential for
 how operating systems execute commands and manage system resources. Features include command 
 parsing, built-in command implementation, and signal handling. 
 
-Topics: 
+Topics: shell, c-programming, linux, system-programming, unix, process-management, 
+cli, bash-implementation, command-parsing, operating-systems
 
 0. Betty would be proud
 
