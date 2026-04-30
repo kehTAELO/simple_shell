@@ -2,8 +2,13 @@
 
 this is a readme file the above mentioned team project in which i will be doing SOLO created by taELo lebELo.
 
-Description: 
-Topics: (none)
+Description: A functional Unix shell implementation in C demonstrating core system-level operations and 
+process management. This project showcases command-line tool development, file and process 
+handling, environment variable management, and system interaction. Essential for understanding 
+how operating systems execute commands and manage system resources. Features include command 
+parsing, built-in command implementation, and signal handling. 
+
+Topics: 
 
 0. Betty would be proud
 
